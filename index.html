@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rota DMC · Tur operatörleri için uçuş arama ve AI operasyon planı</title>
+<meta name="description" content="Rota DMC; grup turu, umre ve hac, MICE organizasyonu yürüten tur operatörleri ve DMC'ler için uçuş arama ile operasyon planlamayı bir araya getirir. Rotaya ve tarihe göre uçuşları karşılaştırın; grup bilgilerinden risk analizi, araç planı ve dakika dakika program çıkarın. Örnek veriyle canlı deneyin.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="ikon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="ikon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:site_name" content="Perabayt">
+<meta property="og:url" content="https://perabayt.github.io/rota-dmc/">
+<meta property="og:title" content="Rota DMC · Grubun uçuşunu bulun, operasyonu dakikasıyla planlayın">
+<meta property="og:description" content="Tur operatörleri ve DMC'ler için uçuş arama ve AI operasyon planı: karşılaştırmalı uçuş sonuçları, risk analizi, araç planı ve karşılama programı. Örnek veriyle canlı deneyin.">
+<meta property="og:image" content="https://perabayt.github.io/rota-dmc/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rota DMC: uçuş sonuçları ve AI operasyon raporu ekranları, örnek veriyle">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rota DMC · Grubun uçuşunu bulun, operasyonu dakikasıyla planlayın">
+<meta name="twitter:description" content="Uçuş arama ve AI operasyon planı, tur operatörleri ve DMC'ler için. Örnek veriyle canlı deneyin.">
+<meta name="twitter:image" content="https://perabayt.github.io/rota-dmc/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="/_ortak/serit.js" defer></script>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fbf8f9; --bg3:#f5eff2; --kart:#ffffff;
+  --ink:#15111a; --text:#1f1b25; --muted:#5d5866; --dim:#8b8594;
+  --line:rgba(26,16,30,.08); --line2:rgba(26,16,30,.12); --line3:rgba(26,16,30,.22);
+  --brand:#ff0054; --brand-d:#d10046; --brand-k:#a8003a; --brand-l:#ff6699; --gul:#fff1f5; --gul2:#ffe3ec;
+  --go:#15803d; --amber:#b45309;
+  --night:#150e17; --night2:#1e1521; --nline:rgba(255,255,255,.09); --nmuted:#b9adbd; --ndim:#86798b;
+  --gr:linear-gradient(120deg,#ff0054 0%,#ff2e72 45%,#ff7aa3 100%);
+  --d:"Plus Jakarta Sans","Inter",system-ui,sans-serif;
+  --f:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  --m:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --gut:32px; --max:1200px; --r3:20px;
+  --golge:0 1px 2px rgba(26,16,30,.04),0 12px 32px -12px rgba(26,16,30,.14);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.62 var(--f);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%;display:block;height:auto}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sar{max-width:var(--max);margin:0 auto;padding:0 var(--gut);position:relative}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:6px}
+.gr{background:var(--gr);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kod{font-family:var(--m);font-weight:500;letter-spacing:-.01em}
+
+/* ---------- üst çubuk ---------- */
+.ust{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.78);backdrop-filter:saturate(170%) blur(16px);-webkit-backdrop-filter:saturate(170%) blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
+.ust.kaydi{border-bottom-color:var(--line)}
+.ust .sar{display:flex;align-items:center;height:62px;gap:28px}
+.marka{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.marka img{width:28px;height:28px;border-radius:8px}
+.logo{font:800 20px/1 var(--d);letter-spacing:-.04em;color:var(--brand)}
+.logo span{color:var(--ink)}
+.marka small{font:500 11px/1 var(--m);color:var(--dim);border:1px solid var(--line2);border-radius:99px;padding:4px 8px}
+.ust nav{display:flex;gap:2px;font-size:14px;color:var(--muted);margin-right:auto}
+.ust nav a{text-decoration:none;padding:6px 11px;border-radius:8px;transition:color .2s,background .2s}
+.ust nav a:hover{color:var(--ink);background:rgba(26,16,30,.045)}
+.ust nav a.aktif{color:var(--brand-d)}
+
+/* ---------- düğmeler ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;border-radius:13px;font:600 15px/1 var(--f);text-decoration:none;border:1px solid var(--line2);background:#fff;color:var(--ink);cursor:pointer;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s;white-space:nowrap}
+.btn:hover{border-color:var(--line3);background:var(--bg2)}
+.btn .i{width:17px;height:17px;transition:transform .2s}
+.btn:hover .i.ok{transform:translateX(3px)}
+.btn.ana{border:0;color:#fff;background:linear-gradient(135deg,#ff0054 0%,#e0004b 55%,#c40042 100%);box-shadow:0 0 0 1px rgba(255,255,255,.14) inset,0 12px 30px -10px rgba(255,0,84,.6)}
+.btn.ana:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(255,255,255,.2) inset,0 16px 36px -10px rgba(255,0,84,.75)}
+.btn.kucuk{height:38px;padding:0 15px;font-size:13.5px;border-radius:10px}
+
+/* ---------- yazı ---------- */
+.kas{font:500 12px/1 var(--m);letter-spacing:.14em;text-transform:uppercase;color:var(--brand-d);display:inline-flex;align-items:center;gap:10px}
+.kas::before{content:"";width:16px;height:1px;background:currentColor;opacity:.7}
+h1,h2,h3{margin:0;font-family:var(--d);font-weight:800;letter-spacing:-.035em;color:var(--ink)}
+h2{font-size:clamp(32px,4.4vw,54px);line-height:1.05;margin:18px 0 0;text-wrap:balance}
+.bas{max-width:800px}
+.bas.orta{margin:0 auto;text-align:center}
+.bas.orta .kas::after{content:"";width:16px;height:1px;background:currentColor;opacity:.7}
+.bas p{color:var(--muted);font-size:18px;line-height:1.6;margin:20px 0 0;text-wrap:pretty}
+section{position:relative;padding:136px 0}
+.ayrac{border-top:1px solid var(--line)}
+
+/* ---------- kahraman ---------- */
+.kahraman{position:relative;padding:44px 0 40px;overflow:hidden;isolation:isolate}
+.kahraman .fon{position:absolute;inset:0 0 auto;height:1300px;z-index:-2;pointer-events:none;
+  background:radial-gradient(46% 40% at 50% 0%,rgba(255,0,84,.13),transparent 72%),radial-gradient(30% 30% at 12% 20%,rgba(255,102,153,.10),transparent 70%),radial-gradient(30% 30% at 88% 22%,rgba(255,51,119,.08),transparent 70%),linear-gradient(180deg,#fff7fa 0%,#fff 60%)}
+.kahraman .izgara{position:absolute;inset:0 0 auto;height:900px;z-index:-1;pointer-events:none;background-image:radial-gradient(rgba(26,16,30,.13) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(60% 55% at 50% 22%,#000 10%,transparent 75%);mask-image:radial-gradient(60% 55% at 50% 22%,#000 10%,transparent 75%);opacity:.55}
+.rotalar{position:absolute;left:50%;top:0;width:1600px;height:780px;transform:translateX(-50%);z-index:-1;pointer-events:none;overflow:visible;-webkit-mask-image:radial-gradient(34% 38% at 50% 38%,transparent 35%,#000 80%);mask-image:radial-gradient(34% 38% at 50% 38%,transparent 35%,#000 80%)}
+.rotalar path{fill:none;stroke-width:1.3;stroke-dasharray:2 7;stroke-linecap:round}
+.rotalar .liman{fill:#fff;stroke:var(--brand);stroke-width:1.5}
+.rotalar text{font:500 11px var(--m);fill:var(--dim);letter-spacing:.08em}
+.rotalar .ucak{fill:var(--brand)}
+.k-ust{text-align:center;max-width:1040px;margin:0 auto}
+.rozet{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:99px;border:1px solid var(--line2);background:rgba(255,255,255,.8);font-size:13.5px;color:var(--muted);text-decoration:none;box-shadow:0 2px 10px -4px rgba(26,16,30,.12)}
+.rozet b{font:500 11px/1 var(--m);color:#fff;background:var(--brand);padding:5px 9px;border-radius:99px;letter-spacing:.06em}
+h1{font-size:clamp(42px,5.1vw,68px);line-height:1.04;letter-spacing:-.04em;margin:22px 0 0;text-wrap:balance}
+h1 .gr{padding-bottom:.08em}
+.giris{font-size:clamp(16.5px,1.45vw,18.5px);line-height:1.6;color:var(--muted);max-width:740px;margin:20px auto 0;text-wrap:pretty}
+.giris b{color:var(--ink);font-weight:600}
+.eylem{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:28px 0 0}
+.alt-yazi{margin:18px 0 0;font:400 12.5px/1.5 var(--m);color:var(--dim)}
+.alt-yazi span+span::before{content:"·";margin:0 10px;color:var(--line3)}
+
+/* canlı pencere */
+.sahne{position:relative;max-width:1220px;margin:40px auto 0}
+.sahne::before{content:"";position:absolute;left:8%;right:8%;top:10%;bottom:-3%;background:radial-gradient(50% 50% at 50% 50%,rgba(255,0,84,.22),transparent 70%);filter:blur(60px);z-index:-1}
+.cerceve{padding:10px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.55));border:1px solid var(--line2);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 50px 120px -40px rgba(60,10,35,.35),0 18px 40px -20px rgba(60,10,35,.2)}
+.pencere{border-radius:15px;overflow:hidden;border:1px solid var(--line2);background:#fff;position:relative}
+.adres{height:42px;display:flex;align-items:center;gap:14px;padding:0 14px;background:#f7f4f6;border-bottom:1px solid var(--line)}
+.noktalar{display:flex;gap:7px;flex:none}
+.noktalar i{width:11px;height:11px;border-radius:50%;background:#e2dbe0}
+.url{flex:1;min-width:0;max-width:460px;margin:0 auto;height:27px;border-radius:8px;background:#fff;border:1px solid var(--line);font:12px/25px var(--m);color:var(--dim);padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.url b{color:var(--ink);font-weight:500}
+.adres .bos{width:47px;flex:none}
+.ekran{position:relative;overflow:hidden;height:750px;background:#fff}
+.ekran iframe{display:block;border:0;width:1280px;height:800px;transform-origin:0 0;background:#fff}
+.imlec{position:absolute;left:0;top:0;width:24px;height:24px;z-index:3;pointer-events:none;opacity:0;transform:translate(600px,400px);transition:transform .8s cubic-bezier(.45,.05,.2,1),opacity .3s;filter:drop-shadow(0 3px 6px rgba(26,16,30,.35))}
+.imlec.gor{opacity:1}
+.imlec::after{content:"";position:absolute;left:-14px;top:-14px;width:30px;height:30px;border-radius:50%;background:rgba(255,0,84,.4);transform:scale(0);opacity:0}
+.imlec.bas::after{animation:tik .45s ease-out}
+@keyframes tik{0%{transform:scale(.2);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.dokun{display:none;position:absolute;inset:0;z-index:4;align-items:flex-end;justify-content:center;padding:16px;text-decoration:none;background:linear-gradient(180deg,transparent 52%,rgba(255,255,255,.92) 88%)}
+.dokun span{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;max-width:320px;height:54px;border-radius:15px;color:#fff;font:600 16.5px/1 var(--f);background:linear-gradient(135deg,#ff0054,#c40042);box-shadow:0 12px 28px -8px rgba(255,0,84,.6)}
+.dokun .i{width:17px;height:17px}
+.ekran.dar .dokun{display:flex}
+.ekran.dar iframe{pointer-events:none}
+
+.demo-alt{max-width:1220px;margin:18px auto 0;display:grid;gap:14px}
+.demo-ust{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:0 4px}
+.durum{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);min-height:36px;min-width:0}
+.durum>i{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.durum[data-d="oynuyor"]>i{background:var(--brand);animation:nabiz 1.6s infinite}
+.durum[data-d="sizde"]>i,.durum[data-d="bitti"]>i{background:#16a34a}
+@keyframes nabiz{0%{box-shadow:0 0 0 0 rgba(255,0,84,.5)}70%{box-shadow:0 0 0 8px rgba(255,0,84,0)}100%{box-shadow:0 0 0 0 rgba(255,0,84,0)}}
+.durum #durum-yazi b{color:var(--ink);font-weight:600}
+.durum button{all:unset;cursor:pointer;white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-weight:500;padding:6px 11px;border-radius:9px;border:1px solid var(--line2);font-size:13px;background:#fff}
+.durum button:hover{border-color:var(--line3)}
+.durum button[hidden]{display:none}
+.durum button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.durum button .i{width:14px;height:14px}
+.adimlar{display:flex;gap:6px;align-items:center}
+.adimlar i{width:22px;height:4px;border-radius:9px;background:#ece6ea;transition:background .4s,width .4s}
+.adimlar i.gecti{background:rgba(255,0,84,.35)}
+.adimlar i.simdi{background:var(--brand);width:36px}
+.sekmeler{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sekmeler button{display:inline-flex;align-items:center;gap:9px;font:500 14px/1 var(--f);padding:11px 15px;border-radius:11px;border:1px solid var(--line2);background:#fff;color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.sekmeler button .i{width:16px;height:16px}
+.sekmeler button:hover{color:var(--ink);border-color:var(--line3)}
+.sekmeler button.sec{color:var(--brand-k);border-color:rgba(255,0,84,.4);background:var(--gul)}
+.dipnot{font-size:13px;line-height:1.55;color:var(--dim);max-width:840px;margin:4px auto 0;text-align:center;text-wrap:pretty}
+
+/* rakam şeridi */
+.rakamlar{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r3);background:linear-gradient(180deg,#fff,var(--bg2));margin-top:88px}
+.rakamlar div{padding:28px 28px 26px;border-left:1px solid var(--line)}
+.rakamlar div:first-child{border-left:0}
+.rakamlar b{display:block;font:800 clamp(32px,3.6vw,46px)/1 var(--d);letter-spacing:-.045em;color:var(--ink)}
+.rakamlar b small{font-size:.5em;letter-spacing:-.02em;color:var(--brand-d);margin-left:4px}
+.rakamlar span{display:block;color:var(--muted);font-size:14px;margin-top:12px;line-height:1.45}
+
+/* ---------- iki araç ---------- */
+.ikili{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:64px}
+.arac{position:relative;display:block;text-decoration:none;border-radius:var(--r3);border:1px solid var(--line);background:linear-gradient(180deg,#fff,var(--bg2));padding:30px;overflow:hidden;transition:border-color .25s,transform .3s cubic-bezier(.3,.7,.2,1),box-shadow .3s}
+.arac:hover{border-color:rgba(255,0,84,.3);transform:translateY(-2px);box-shadow:var(--golge)}
+.arac .ust-s{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.arac .ik{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--brand);background:var(--gul);border:1px solid rgba(255,0,84,.18)}
+.arac .ik .i{width:22px;height:22px}
+.arac .en{font:500 12px/1 var(--m);color:var(--dim);border:1px solid var(--line2);border-radius:7px;padding:6px 8px}
+.arac h3{font-size:26px;letter-spacing:-.03em;margin:22px 0 0}
+.arac p{color:var(--muted);margin:10px 0 0;font-size:16px;text-wrap:pretty}
+.arac ul{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.arac li{font-size:13px;color:var(--text);padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--line2)}
+.arac .git-y{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font:600 14px/1 var(--f);color:var(--brand-d)}
+.arac .git-y .i{width:15px;height:15px;transition:transform .2s}
+.arac:hover .git-y .i{transform:translateY(2px)}
+
+/* ---------- hikâye satırları ---------- */
+.satirlar{display:grid;gap:120px;margin-top:96px}
+.satir{display:grid;grid-template-columns:4.5fr 7.5fr;gap:64px;align-items:center}
+.satir.ters{grid-template-columns:7.5fr 4.5fr}
+.satir.ters .metin{order:2}
+.no{font:500 12px/1 var(--m);color:var(--brand-d);letter-spacing:.1em;display:flex;align-items:center;gap:10px;text-transform:uppercase}
+.no em{font-style:normal;color:var(--dim)}
+.satir h3{font-size:clamp(27px,2.8vw,36px);line-height:1.12;margin:16px 0 0;text-wrap:balance}
+.satir p{color:var(--muted);margin:16px 0 0;font-size:16.5px;text-wrap:pretty}
+.satir p q{color:var(--ink);font-family:var(--m);font-size:.9em;quotes:"“" "”"}
+.liste{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.liste li{display:grid;grid-template-columns:18px 1fr;gap:12px;color:var(--muted);font-size:15px;line-height:1.55}
+.liste li .i{width:16px;height:16px;color:var(--brand);margin-top:4px}
+.liste li b{color:var(--ink);font-weight:600}
+.git{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;margin-top:26px;font:500 14px/1 var(--f);color:var(--ink);padding:10px 14px;border-radius:10px;border:1px solid var(--line2);background:#fff;transition:border-color .2s,background .2s}
+.git:hover{border-color:rgba(255,0,84,.4);background:var(--gul)}
+.git .i{width:15px;height:15px}
+.git:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.cekim{position:relative;margin:0;border-radius:var(--r3);padding:14px;background:radial-gradient(90% 80% at 100% 0%,rgba(255,0,84,.10),transparent 60%),radial-gradient(70% 70% at 0% 100%,rgba(255,102,153,.08),transparent 60%),var(--bg3);border:1px solid var(--line)}
+.cekim button{all:unset;display:block;width:100%;box-sizing:border-box;cursor:zoom-in;border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:#fff;box-shadow:0 30px 60px -32px rgba(60,10,35,.4);transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.cekim button:hover{transform:translateY(-3px)}
+.cekim button:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.kirp{display:block;position:relative;aspect-ratio:var(--oran,16/10);overflow:hidden;background:#fff}
+.kirp img{position:absolute;left:0;top:0;width:100%;height:auto;max-width:none}
+.kirp.solgun::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,rgba(255,255,255,0),#fff)}
+.cekim figcaption{display:flex;justify-content:space-between;gap:12px;font:400 12px/1.4 var(--m);color:var(--dim);margin:12px 4px 0}
+
+.not-kutu{display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:start;margin:96px auto 0;max-width:920px;padding:26px 28px;border-radius:18px;border:1px dashed rgba(255,0,84,.35);background:linear-gradient(180deg,var(--gul),#fff)}
+.not-kutu .ik{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#fff;border:1px solid rgba(255,0,84,.25);color:var(--brand)}
+.not-kutu h3{font-size:19px;letter-spacing:-.02em}
+.not-kutu p{margin:8px 0 0;color:var(--muted);font-size:15.5px;line-height:1.6;text-wrap:pretty}
+
+/* ---------- AI operasyon ---------- */
+.ops{background:linear-gradient(180deg,var(--bg2),#fff 40%)}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:64px}
+.kutu{position:relative;border-radius:var(--r3);border:1px solid var(--line);background:#fff;padding:28px 28px 0;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:0 1px 2px rgba(26,16,30,.03)}
+.kutu::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,rgba(255,0,84,.55),transparent);opacity:.6}
+.kutu .no{font-size:11.5px}
+.kutu h3{font-size:23px;line-height:1.2;margin:12px 0 0;letter-spacing:-.028em}
+.kutu p{color:var(--muted);font-size:15px;margin:10px 0 0;line-height:1.58;text-wrap:pretty}
+.kutu .mini{margin-top:auto;padding-top:26px}
+.kutu .mini button{all:unset;display:block;width:100%;box-sizing:border-box;cursor:zoom-in;border-radius:12px 12px 0 0;overflow:hidden;border:1px solid var(--line2);border-bottom:0;background:#fff;box-shadow:0 -10px 40px -24px rgba(60,10,35,.35);transition:transform .35s}
+.kutu .mini button:hover{transform:translateY(-4px)}
+.kutu .mini button:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
+.kutu .kirp{aspect-ratio:var(--oran,16/9)}
+.kutu.tint{background:linear-gradient(180deg,var(--gul),#fff 55%)}
+.b-form{grid-column:span 7}.b-ozet{grid-column:span 5}.b-risk{grid-column:span 12}.b-arac{grid-column:span 6}.b-pdf{grid-column:span 6}
+.b-risk{display:grid;grid-template-columns:5fr 7fr;gap:44px;padding:32px 32px 0;align-items:end}
+.b-risk .metin{padding-bottom:32px;align-self:center}
+.b-risk .mini{padding-top:0}
+.kurallar{display:grid;gap:8px;margin-top:18px}
+.kurallar span{display:flex;align-items:baseline;gap:10px;font-size:14px;color:var(--muted)}
+.kurallar code{font:500 12.5px/1 var(--m);color:var(--brand-k);background:var(--gul);border:1px solid rgba(255,0,84,.18);padding:4px 7px;border-radius:6px;white-space:nowrap}
+.kagit{background:#fff;padding:10px 10px 0;border-radius:12px 12px 0 0}
+.seviye{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.seviye span{font:500 12px/1 var(--m);padding:6px 9px;border-radius:7px;border:1px solid}
+.seviye .d{color:#15803d;border-color:rgba(21,128,61,.3);background:#f0fdf4}
+.seviye .o{color:#b45309;border-color:rgba(180,83,9,.3);background:#fffbeb}
+.seviye .y{color:var(--brand-k);border-color:rgba(255,0,84,.3);background:var(--gul)}
+
+.zaman-satir{margin-top:120px}
+.tel-dizi{display:flex;justify-content:center;gap:18px;margin-top:56px}
+.tel{width:31%;max-width:250px;border-radius:34px;padding:8px;background:linear-gradient(180deg,#2a2230,#16101a);box-shadow:0 40px 70px -34px rgba(60,10,35,.55)}
+.tel:nth-child(2){transform:translateY(34px)}
+.tel button{all:unset;display:block;cursor:zoom-in;border-radius:27px;overflow:hidden;aspect-ratio:390/780;width:100%;background:#fff}
+.tel button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.tel img{width:100%;height:100%;object-fit:cover;object-position:top}
+.tel-alt{display:flex;justify-content:center;gap:18px;margin-top:52px}
+.tel-alt span{width:31%;max-width:250px;text-align:center;font:400 12.5px/1.45 var(--m);color:var(--dim)}
+
+/* ---------- yolculuk (gece) ---------- */
+.gece{background:radial-gradient(60% 40% at 50% 0%,rgba(255,0,84,.16),transparent 70%),var(--night);color:#efe8f0}
+.gece h2,.gece h3{color:#fff}
+.gece .kas{color:#ff7aa3}
+.gece .bas p{color:var(--nmuted)}
+.yol{position:relative;margin:76px auto 0;max-width:1000px;list-style:none;padding:0}
+.yol::before{content:"";position:absolute;left:50%;top:10px;bottom:10px;width:2px;margin-left:-1px;background:var(--nline)}
+.yol .ilerleme{position:absolute;left:50%;top:10px;width:2px;margin-left:-1px;height:var(--h,0px);background:linear-gradient(180deg,#ff6699,#ff0054);box-shadow:0 0 14px rgba(255,0,84,.55);transition:height .2s linear}
+.durak{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:76px;margin-bottom:44px}
+.durak:last-child{margin-bottom:0}
+.durak+.durak{margin-top:-150px}
+.durak .kart{grid-column:1;text-align:right;padding:24px 26px;border-radius:16px;border:1px solid var(--nline);background:linear-gradient(180deg,var(--night2),rgba(30,21,33,.6))}
+.durak:nth-of-type(odd) .kart{grid-column:2;text-align:left}
+.durak .nokta{position:absolute;left:50%;top:26px;width:36px;height:36px;margin-left:-18px;border-radius:50%;display:grid;place-items:center;background:var(--night);border:1.5px solid rgba(255,255,255,.22);font:700 13px/1 var(--d);color:var(--ndim);transition:all .4s;z-index:1}
+.durak.gecti .nokta{border-color:#ff3377;color:#fff;background:#4a0f26;box-shadow:0 0 0 6px rgba(255,0,84,.16)}
+.durak .etiket{display:inline-flex;align-items:center;gap:7px;font:500 11.5px/1 var(--m);letter-spacing:.06em;text-transform:uppercase;color:#ff7aa3}
+.durak .etiket i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.durak h3{font-size:22px;line-height:1.22;margin:12px 0 0;letter-spacing:-.025em}
+.durak p{color:var(--nmuted);font-size:15px;margin:10px 0 0;line-height:1.58}
+.durak .veri{display:inline-block;margin-top:14px;font:400 12.5px/1.5 var(--m);color:#fff;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--nline)}
+.durak .git{margin-top:16px;padding:8px 12px;font-size:13px;color:#fff;background:transparent;border-color:rgba(255,255,255,.18)}
+.durak .git:hover{background:rgba(255,0,84,.14);border-color:rgba(255,102,153,.5)}
+.yol-not{text-align:center;color:var(--ndim);font-size:13px;margin:52px 0 0}
+
+/* ---------- SSS ---------- */
+.sss{display:grid;grid-template-columns:1fr 1.6fr;gap:64px;align-items:start}
+.sss .bas{position:sticky;top:100px}
+.soru{border-bottom:1px solid var(--line)}
+.soru:first-child{border-top:1px solid var(--line)}
+.soru summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 2px;font:700 18px/1.35 var(--d);letter-spacing:-.015em;color:var(--ink)}
+.soru summary::-webkit-details-marker{display:none}
+.soru summary:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.soru summary i{position:relative;width:16px;height:16px;flex:none;color:var(--dim)}
+.soru summary i::before,.soru summary i::after{content:"";position:absolute;left:0;right:0;top:7.25px;height:1.5px;background:currentColor;border-radius:2px;transition:transform .25s}
+.soru summary i::after{transform:rotate(90deg)}
+.soru[open] summary i::after{transform:rotate(0)}
+.soru[open] summary i{color:var(--brand)}
+.soru summary:hover i{color:var(--ink)}
+.soru .cevap{padding:0 40px 24px 2px;color:var(--muted);font-size:15.5px;line-height:1.66}
+.soru .cevap p{margin:0 0 10px}
+.soru .cevap p:last-child{margin:0}
+
+/* ---------- kapanış ---------- */
+.kapanis{padding:0 0 128px}
+.bant{position:relative;overflow:hidden;border-radius:28px;padding:96px 40px;text-align:center;isolation:isolate;color:#fff;background:radial-gradient(60% 90% at 50% 0%,rgba(255,0,84,.45),transparent 70%),radial-gradient(40% 70% at 90% 100%,rgba(255,102,153,.18),transparent 70%),var(--night)}
+.bant svg.rota{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.5}
+.bant .kas{color:#ff9dbb}
+.bant h2{color:#fff;font-size:clamp(32px,4.6vw,58px);margin:20px auto 0;max-width:860px}
+.bant p{color:var(--nmuted);font-size:18px;max-width:640px;margin:18px auto 0}
+.bant .eylem{margin-top:34px}
+.bant .btn:not(.ana){background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.2)}
+.bant .btn:not(.ana):hover{background:rgba(255,255,255,.12)}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px;background:var(--bg2)}
+footer .sar{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+footer .imza{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--muted)}
+footer .imza img{width:32px;height:32px;border-radius:9px}
+footer .imza b{display:block;font:800 17px/1.2 var(--d);letter-spacing:-.03em;color:var(--brand)}
+footer .imza b span{color:var(--ink)}
+footer nav{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+footer nav a{text-decoration:none}
+footer nav a:hover{color:var(--ink)}
+footer .not{width:100%;font-size:12.5px;color:var(--dim);margin:0;line-height:1.55}
+
+/* ---------- büyük görüntü ---------- */
+dialog{border:0;padding:0;background:transparent;max-width:min(94vw,1400px);max-height:94vh;color:#fff}
+dialog::backdrop{background:rgba(21,14,23,.88);backdrop-filter:blur(6px)}
+dialog img{max-height:84vh;width:auto;max-width:100%;border-radius:12px;margin:0 auto;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+dialog p{color:#d9cfdb;text-align:center;margin:14px 0 0;font-size:14px}
+dialog .kapat{position:fixed;top:16px;right:18px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;cursor:pointer;display:grid;place-items:center}
+dialog .kapat .i{width:18px;height:18px}
+
+/* ---------- hareket (içerik durağanken de görünür) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .js .belir{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .js .belir.gorundu{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- duyarlı ---------- */
+@media (max-width:1080px){
+  :root{--gut:24px}
+  .ust nav{display:none}
+  .ust .sag{margin-left:auto}
+  .satir,.satir.ters{grid-template-columns:1fr;gap:36px}
+  .satir.ters .metin{order:0}
+  .bento{grid-template-columns:1fr 1fr}
+  .b-form,.b-risk{grid-column:1/-1}
+  .b-ozet,.b-arac,.b-pdf{grid-column:span 1}
+  .b-ozet{grid-column:1/-1}
+  .b-risk{grid-template-columns:1fr;gap:0;padding:28px 28px 0}
+  .b-risk .metin{padding-bottom:26px}
+  .sss{grid-template-columns:1fr;gap:32px}
+  .sss .bas{position:static}
+}
+@media (max-width:760px){
+  :root{--gut:20px}
+  section{padding:92px 0}
+  .ust .sar{height:56px}
+  .marka small{display:none}
+  .kahraman{padding:44px 0 24px}
+  .rotalar{width:1100px;height:560px;opacity:.7}
+  .rozet{font-size:12px}
+  h1{font-size:clamp(34px,9.6vw,46px);margin-top:20px;letter-spacing:-.045em}
+  .giris{font-size:16.5px;margin-top:20px}
+  .eylem{flex-direction:column;align-items:stretch;gap:10px;margin-top:28px}
+  .eylem .btn{height:auto;min-height:54px;padding:14px 18px;font-size:16px;white-space:normal;text-align:center;line-height:1.3}
+  .alt-yazi{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+  .alt-yazi span+span::before{display:none}
+  .sahne{margin-top:36px}
+  .cerceve{padding:5px;border-radius:17px}
+  .pencere{border-radius:12px}
+  .adres{height:30px;padding:0 9px;gap:8px}
+  .noktalar i{width:7px;height:7px}.noktalar{gap:4px}
+  .url{height:19px;font-size:10.5px;line-height:17px;border-radius:5px}
+  .adres .bos{display:none}
+  .demo-ust{flex-direction:column;align-items:stretch;gap:10px}
+  .adimlar{justify-content:center}
+  .sekmeler button{flex:1;justify-content:center;padding:12px 10px;font-size:13.5px}
+  .dipnot{text-align:left;font-size:12.5px}
+  .rakamlar{grid-template-columns:1fr 1fr;margin-top:64px}
+  .rakamlar div{padding:20px 18px}
+  .rakamlar div:nth-child(3){border-left:0}
+  .rakamlar div:nth-child(n+3){border-top:1px solid var(--line)}
+  .rakamlar span{font-size:13px}
+  .bas p{font-size:16.5px}
+  .ikili{grid-template-columns:1fr;margin-top:44px}
+  .arac{padding:24px 22px}
+  .arac h3{font-size:23px}
+  .satirlar{gap:84px;margin-top:64px}
+  .cekim{padding:7px;border-radius:14px}
+  .cekim button{border-radius:9px}
+  .cekim figcaption{flex-direction:column;gap:2px}
+  .not-kutu{grid-template-columns:1fr;gap:14px;padding:22px 20px;margin-top:72px}
+  .bento{grid-template-columns:1fr;margin-top:44px}
+  .b-ozet,.b-arac,.b-pdf{grid-column:1/-1}
+  .kutu{padding:22px 20px 0}
+  .b-risk{padding:22px 20px 0}
+  .kurallar span{flex-direction:column;gap:6px}
+  .zaman-satir{margin-top:84px}
+  .tel-dizi{gap:10px;margin-top:40px}
+  .tel{border-radius:22px;padding:5px}
+  .tel button{border-radius:18px}
+  .tel:nth-child(2){transform:translateY(20px)}
+  .tel-alt{gap:10px;margin-top:34px}
+  .tel-alt span{font-size:11px}
+  .yol{margin-top:52px}
+  .yol::before,.yol .ilerleme{left:18px}
+  .durak{grid-template-columns:1fr;gap:0;padding-left:54px;margin-bottom:28px}
+  .durak+.durak{margin-top:0}
+  .durak .kart,.durak:nth-of-type(odd) .kart{grid-column:1;text-align:left;padding:20px}
+  .durak .nokta{left:0;margin-left:0;top:20px}
+  .soru summary{font-size:16.5px;padding:20px 2px}
+  .soru .cevap{padding-right:8px}
+  .kapanis{padding-bottom:92px}
+  .bant{padding:60px 22px;border-radius:22px}
+  .bant p{font-size:16.5px}
+  footer .sar{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:420px){
+  .ust .sag .btn{padding:0 12px}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add("js")</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-ucak" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+  <symbol id="i-yildiz" viewBox="0 0 24 24"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7L4.5 11 10.1 9z"/><path d="M19 3v4M17 5h4M5 17v3M3.5 18.5h3"/></symbol>
+  <symbol id="i-ara" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-uyari" viewBox="0 0 24 24"><path d="M10.3 3.9 2.2 18a2 2 0 0 0 1.7 3h16.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-otobus" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="14" rx="2.5"/><path d="M4 11h16M8 17.5V20M16 17.5V20M7.5 14.5h.01M16.5 14.5h.01"/></symbol>
+  <symbol id="i-saat" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-belge" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+  <symbol id="i-veri" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/><path d="M4.5 5.5v6c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-6M4.5 11.5v6c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-6"/></symbol>
+  <symbol id="i-tik" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-asagi" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-yukari" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-dis" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-yenile" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-oynat" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+</svg>
+
+<header class="ust" id="ust">
+  <div class="sar">
+    <a class="marka" href="#" aria-label="Rota DMC, sayfanın başı"><img src="ikon.svg" alt="" width="28" height="28"><span class="logo">rota<span>DMC</span></span><small>Konsept</small></a>
+    <nav aria-label="Sayfa içi">
+      <a href="#canli">Canlı demo</a><a href="#ucus">Uçuş arama</a><a href="#operasyon">AI Operasyon</a><a href="#yolculuk">Bir grubun yolculuğu</a><a href="#sss">SSS</a>
+    </nav>
+    <div class="sag">
+      <a class="btn kucuk ana" href="uygulama/" target="_blank" rel="noopener">Uygulamayı aç <svg class="i"><use href="#i-dis"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============ KAHRAMAN ============ -->
+<div class="kahraman">
+  <div class="fon" aria-hidden="true"></div>
+  <div class="izgara" aria-hidden="true"></div>
+  <svg class="rotalar" viewBox="0 0 1600 780" aria-hidden="true">
+    <defs>
+      <linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#ff0054" stop-opacity="0"/><stop offset=".35" stop-color="#ff0054" stop-opacity=".55"/><stop offset=".7" stop-color="#ff6699" stop-opacity=".5"/><stop offset="1" stop-color="#ff6699" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path id="r-a" d="M120 470C420 150 820 120 1080 250" stroke="url(#rg)"/>
+    <path id="r-b" d="M300 120C640 300 1060 330 1490 520" stroke="url(#rg)"/>
+    <path id="r-c" d="M1500 160C1240 70 900 70 620 210" stroke="url(#rg)"/>
+    <circle class="liman" cx="1080" cy="250" r="4"/><text x="1094" y="254">JED</text>
+    <circle class="liman" cx="1490" cy="520" r="4"/><text x="1440" y="546">MED</text>
+    <circle class="liman" cx="120" cy="470" r="4"/><text x="96" y="496">IST</text>
+    <circle class="liman" cx="300" cy="120" r="4"/><text x="276" y="106">SAW</text>
+    <circle class="liman" cx="620" cy="210" r="4"/><text x="560" y="196">LHR</text>
+    <g class="ucak-g">
+      <circle class="ucak" r="3"><animateMotion dur="16s" repeatCount="indefinite"><mpath href="#r-a"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="16s" repeatCount="indefinite"/></circle>
+      <circle class="ucak" r="3"><animateMotion dur="21s" begin="-7s" repeatCount="indefinite"><mpath href="#r-b"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="21s" begin="-7s" repeatCount="indefinite"/></circle>
+      <circle class="ucak" r="3"><animateMotion dur="19s" begin="-12s" repeatCount="indefinite"><mpath href="#r-c"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="19s" begin="-12s" repeatCount="indefinite"/></circle>
+    </g>
+  </svg>
+  <div class="sar">
+    <div class="k-ust">
+      <a class="rozet" href="#ucus"><b>KONSEPT</b>Tur operatörleri ve DMC'ler için</a>
+      <h1>Grubun uçuşunu bulun, <span class="gr">operasyonu dakikasıyla</span> planlayın.</h1>
+      <p class="giris">Grup turu, umre ve hac, MICE yürüten ekipler için iki araç bir arada: <b>Flight Search</b> uçuşları fiyatına göre sıralar, <b>AI Operations</b> grup bilgilerinden risk analizi, araç planı ve dakika dakika program çıkarır.</p>
+      <div class="eylem">
+        <a class="btn ana" href="uygulama/" target="_blank" rel="noopener">Uygulamayı canlı dene <svg class="i ok"><use href="#i-ok"/></svg></a>
+        <a class="btn" href="#araclar">Nasıl çalışır <svg class="i"><use href="#i-asagi"/></svg></a>
+      </div>
+      <p class="alt-yazi"><span>Tarayıcıda çalışır</span><span>Uluslararası ekipler için İngilizce arayüz</span><span>Örnek uçuş verisiyle canlı</span></p>
+    </div>
+
+    <div class="sahne" id="canli">
+      <div class="cerceve">
+        <div class="pencere">
+          <div class="adres"><span class="noktalar" aria-hidden="true"><i></i><i></i><i></i></span><span class="url" id="url">rota-dmc · <b id="url-ad">Flight Search</b></span><span class="bos"></span></div>
+          <div class="ekran" id="ekran">
+            <iframe id="uyg" src="uygulama/" title="Rota DMC uygulaması, örnek uçuş verisiyle çalışan canlı sürüm"></iframe>
+            <svg class="imlec" id="imlec" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.5l15 9-6.6 1.4-3.5 6.1z" fill="#15111a" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <a class="dokun" href="uygulama/" target="_blank" rel="noopener"><span>Uygulamayı aç <svg class="i"><use href="#i-dis"/></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-alt">
+      <div class="demo-ust">
+        <div class="durum" id="durum" data-d="hazir" role="status" aria-live="polite"><i></i><span id="durum-yazi">Canlı uygulama · örnek veri</span><button type="button" id="durum-dugme" hidden></button></div>
+        <div class="adimlar" id="adimlar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="sekmeler" id="sekmeler" role="group" aria-label="Uygulamada bir ekrana git">
+        <button type="button" data-ac="ucus"><svg class="i"><use href="#i-ucak"/></svg>Flight Search</button>
+        <button type="button" data-ac="ops"><svg class="i"><use href="#i-yildiz"/></svg>AI Operations</button>
+      </div>
+      <p class="dipnot">Bu pencere uygulamanın kendisidir: havalimanı yazın, tarih seçin, arayın, bir uçuş seçin; AI Operations'ta grubunuzu girip planı oluşturun. Kısa bir tur kendiliğinden oynar, pencereye dokunduğunuz an kontrol sizdedir. Uçuşlar tarayıcıda üretilen örnek verilerdir; havayolu adları yalnızca gerçekçilik içindir.</p>
+    </div>
+
+    <div class="rakamlar belir">
+      <div><b>237</b><span>havalimanı, 82 ülkeden: şehir, ad, IATA kodu ya da ülkeyle aranır</span></div>
+      <div><b>6</b><span>alanlık grup formu: kişi, yaş, varış saati, otel, özel notlar</span></div>
+      <div><b>3</b><span>risk seviyesi, 100 üzerinden puanla: Low, Medium, High</span></div>
+      <div><b>9</b><span>kontrol noktası: inişten karşılama yemeğine kadar</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ İKİ ARAÇ ============ -->
+<section class="ayrac" id="araclar">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">İki araç, tek akış</span>
+      <h2>Önce uçuş seçilir, sonra <span class="gr">grup sahaya hazırlanır.</span></h2>
+      <p>Bir grup operasyonu iki soruyla başlar: hangi uçuşla gidecekler, indiklerinde ne olacak? Rota DMC bu iki soruyu iki ekranda cevaplar; üstteki menüyle aralarında tek tıkla geçilir.</p>
+    </div>
+    <div class="ikili">
+      <a class="arac belir" href="#ucus">
+        <span class="ust-s"><span class="ik"><svg class="i"><use href="#i-ucak"/></svg></span><span class="en">Flight Search</span></span>
+        <h3>Uçuş arama ve karşılaştırma</h3>
+        <p>Kalkış, varış ve tarih seçilir; sonuçlar en ucuzdan pahalıya dizilir. Her kartta havayolu, saatler, süre, aktarma, kabin ve fiyat yan yana.</p>
+        <ul><li>Havalimanı otomatik tamamlama</li><li>Fiyata göre sıralı sonuçlar</li><li>Direkt ve aktarmalı</li><li>Uçuş seçimi</li></ul>
+        <span class="git-y">Uçuş aramaya bakın <svg class="i"><use href="#i-asagi"/></svg></span>
+      </a>
+      <a class="arac belir" href="#operasyon">
+        <span class="ust-s"><span class="ik"><svg class="i"><use href="#i-yildiz"/></svg></span><span class="en">AI Operations</span></span>
+        <h3>Operasyon planı ve risk analizi</h3>
+        <p>Grubun bilgileri altı alana girilir; özet, risk puanı, önlemler, araç ve rehber planı ve dakika dakika program tek raporda çıkar.</p>
+        <ul><li>Risk analizi</li><li>Araç ve rehber planı</li><li>Zaman çizelgesi</li><li>PDF rapor</li></ul>
+        <span class="git-y">AI Operasyon'a bakın <svg class="i"><use href="#i-asagi"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UÇUŞ ARAMA ============ -->
+<section class="ayrac" id="ucus">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">01 · Flight Search</span>
+      <h2>Doğru uçuş, <span class="gr">fiyatına göre sıralı</span> önünüzde.</h2>
+      <p>Grup için uçuş ararken en çok zaman alan iş seçenekleri yan yana koymaktır. Rota DMC sonuçları tek listede, aynı düzende ve en ucuzdan başlayarak gösterir.</p>
+    </div>
+
+    <div class="satirlar">
+      <article class="satir" id="u-arama">
+        <div class="metin belir">
+          <span class="no">01 <em>/ Rota ve tarih</em></span>
+          <h3>Şehri, havalimanını ya da ülkeyi yazın; liste yazdıkça daralır.</h3>
+          <p>Kalkış ve varış kutuları IATA kodunu, şehir ve havalimanı adını, ülkeyi tanır. <q>Saudi</q> yazınca Riyad, Cidde ve Medine birlikte gelir; Türkçe aramalar da çalışır, <q>Kapadokya</q> Nevşehir'i bulur.</p>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Seçim yapılınca kutuda <b>şehir ve IATA kodu</b> birlikte görünür</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span><b>Ok tuşları ve Enter</b> ile klavyeden seçim</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Tek tıkla <b>yön değiştirme</b>; tarih iki hafta sonrasına hazır gelir</span></li>
+          </ul>
+          <button class="git" type="button" data-ac="ucus">Canlı uygulamada dene <svg class="i"><use href="#i-yukari"/></svg></button>
+        </div>
+        <figure class="cekim belir">
+          <button type="button" data-buyuk="ekran/arama@2x.webp" data-ad="Havalimanı araması"><span class="kirp" style="--oran:1144/307"><img src="ekran/arama.webp" srcset="ekran/arama.webp 1144w, ekran/arama@2x.webp 2288w" sizes="(max-width:1080px) 100vw, 720px" width="1144" height="307" alt="Arama formu: From kutusunda Istanbul (IST), To kutusuna Saudi yazılmış; listede Riyadh, Jeddah ve Medina" loading="lazy"></span></button>
+          <figcaption><span>Arama formu · ülkeye göre havalimanı listesi</span><span>Örnek veri</span></figcaption>
+        </figure>
+      </article>
+
+      <article class="satir ters" id="u-sonuc">
+        <div class="metin belir">
+          <span class="no">02 <em>/ Sonuçlar ve fiyat</em></span>
+          <h3>En ucuzu en üstte, işaretli; gerisi aynı düzende altında.</h3>
+          <p>Bulunan uçuşlar fiyata göre sıralanır, en ucuzu <q>Best Price</q> ile işaretlenir. Her kart aynı soruları aynı yerde cevaplar: kim uçuruyor, ne zaman kalkıp iniyor, ne kadar sürüyor, kaç para.</p>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Havayolu ve <b>uçuş numarası</b>, kalkış ve iniş saati, IATA kodları</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Fiyat <b>kişi başı, USD</b>; kabin sınıfı kartın üzerinde</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Az koltuk kaldığında <b>kırmızı uyarı</b></span></li>
+          </ul>
+          <button class="git" type="button" data-ac="ucus">Canlı uygulamada dene <svg class="i"><use href="#i-yukari"/></svg></button>
+        </div>
+        <figure class="cekim belir">
+          <button type="button" data-buyuk="ekran/sonuclar@2x.webp" data-ad="Uçuş sonuçları"><span class="kirp" style="--oran:1144/785"><img src="ekran/sonuclar.webp" srcset="ekran/sonuclar.webp 1144w, ekran/sonuclar@2x.webp 2288w" sizes="(max-width:1080px) 100vw, 720px" width="1144" height="785" alt="İstanbul–Cidde araması: 7 uçuş, fiyata göre sıralı; en üstte Best Price etiketli direkt uçuş" loading="lazy"></span></button>
+          <figcaption><span>IST → JED · 17 Ocak 2027</span><span>Örnek veri</span></figcaption>
+        </figure>
+      </article>
+
+      <article class="satir" id="u-aktarma">
+        <div class="metin belir">
+          <span class="no">03 <em>/ Havayolu ve aktarma</em></span>
+          <h3>Direkt mi, aktarmalı mı? Etiket ve süre karar verdirir.</h3>
+          <p>Direkt uçuşlar yeşil <q>Nonstop</q>, aktarmalılar aktarma noktasıyla birlikte etiketlenir: <q>1 Stop · DOH</q>. Süre aktarmayı da kapsar; ucuz ama uzun bir seçenekle pahalı ama kısa olanı aynı bakışta tartarsınız.</p>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Aynı listede <b>farklı havayolları</b>, her biri kendi rengiyle</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Aktarma noktası <b>IATA koduyla</b> yazılır</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Kartın altında kalkış havalimanının <b>tam adı</b></span></li>
+          </ul>
+        </div>
+        <figure class="cekim belir">
+          <button type="button" data-buyuk="ekran/aktarma@2x.webp" data-ad="Direkt ve aktarmalı uçuşlar"><span class="kirp" style="--oran:1144/689"><img src="ekran/aktarma.webp" srcset="ekran/aktarma.webp 1144w, ekran/aktarma@2x.webp 2288w" sizes="(max-width:1080px) 100vw, 720px" width="1144" height="689" alt="Üç uçuş kartı: bir direkt uçuş, Kahire ve Doha aktarmalı iki uçuş; süreler ve fiyatlar" loading="lazy"></span></button>
+          <figcaption><span>Nonstop ve 1 Stop kartları</span><span>Örnek veri</span></figcaption>
+        </figure>
+      </article>
+
+      <article class="satir ters" id="u-secim">
+        <div class="metin belir">
+          <span class="no">04 <em>/ Seçim</em></span>
+          <h3>Uygun uçuşu seçin; kart yeşile döner.</h3>
+          <p>Karttaki <q>Select</q> düğmesine basınca uçuş <q>Selected ✓</q> olarak işaretlenir; fikir değişirse ikinci dokunuş seçimi kaldırır. Bu konseptte seçim listede işaretlenir; seçilen uçuşu grup teklifine ve rezervasyona taşımak ürün aşamasının işidir.</p>
+          <ul class="liste">
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Birden çok seçenek <b>karşılaştırma için</b> işaretlenebilir</span></li>
+            <li><svg class="i"><use href="#i-tik"/></svg><span>Seçilen uçuşun iniş saati, <b>operasyon planının başlangıcı</b> olur</span></li>
+          </ul>
+          <button class="git" type="button" data-ac="ucus">Canlı uygulamada dene <svg class="i"><use href="#i-yukari"/></svg></button>
+        </div>
+        <figure class="cekim belir">
+          <button type="button" data-buyuk="ekran/secim@2x.webp" data-ad="Uçuş seçimi"><span class="kirp" style="--oran:1144/470"><img src="ekran/secim.webp" srcset="ekran/secim.webp 1144w, ekran/secim@2x.webp 2288w" sizes="(max-width:1080px) 100vw, 720px" width="1144" height="470" alt="Seçilmiş uçuş kartı: yeşil Selected düğmesi; altında seçilmemiş ikinci kart" loading="lazy"></span></button>
+          <figcaption><span>Selected ✓</span><span>Örnek veri</span></figcaption>
+        </figure>
+      </article>
+    </div>
+
+    <div class="not-kutu belir">
+      <span class="ik"><svg class="i"><use href="#i-veri"/></svg></span>
+      <div>
+        <h3>Bu konsept örnek uçuş verisiyle çalışır</h3>
+        <p>Sonuçlar tarayıcıda, seçilen rota ve tarihten üretilir: süreler mesafeye göre, fiyatlar mesafe ve havayolu türüne göre gerçekçi aralıkta hesaplanır; aynı arama her zaman aynı sonucu verir. Ürün sürümünde arama gerçek bir uçuş veri sağlayıcısına bağlanır, fiyat, tarife ve koltuk bilgisi oradan gelir. Listedeki havayolu adları yalnızca gerçekçilik içindir; hiçbiriyle iş birliği yoktur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI OPERASYON ============ -->
+<section class="ayrac ops" id="operasyon">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">02 · AI Operations</span>
+      <h2>Altı alanlık bir form, <span class="gr">eksiksiz bir operasyon planı.</span></h2>
+      <p>Grup adı, kişi sayısı, yaş ortalaması, varış saati, otel ve özel notlar. Plan düğmesine basınca özet, risk puanı, önlemler, araç ve rehber planı ve dakika dakika program tek raporda çıkar.</p>
+    </div>
+
+    <div class="bento">
+      <article class="kutu b-form belir">
+        <span class="no">Form</span>
+        <h3>Grubu altı alanla anlatın.</h3>
+        <p>Özel notlar serbest metindir: tekerlekli sandalye, sağlık durumu, yemek tercihi gibi bilgiler buraya yazılır ve planı doğrudan etkiler.</p>
+        <div class="mini"><button type="button" data-buyuk="ekran/ops-form@2x.webp" data-ad="Group Operations Brief formu"><span class="kirp" style="--oran:1032/520"><img src="ekran/ops-form.webp" srcset="ekran/ops-form.webp 1032w, ekran/ops-form@2x.webp 2064w" sizes="(max-width:1080px) 100vw, 680px" width="1032" height="684" alt="Group Operations Brief formu: grup adı, kişi sayısı 40, yaş ortalaması 58, varış saati 14:06, otel ve özel notlar dolu" loading="lazy"></span></button></div>
+      </article>
+      <article class="kutu b-ozet tint belir">
+        <span class="no">Özet</span>
+        <h3>Riski puanıyla görün.</h3>
+        <p>Raporun başında tek paragraflık özet ve üç kart: risk seviyesi ve 100 üzerinden puanı, grup büyüklüğü, raporun oluşturulduğu an.</p>
+        <div class="seviye"><span class="d">Low</span><span class="o">Medium · 28+</span><span class="y">High · 55+</span></div>
+        <div class="mini"><button type="button" data-buyuk="ekran/ops-ozet@2x.webp" data-ad="Özet ve risk seviyesi"><span class="kirp" style="--oran:1024/328"><img src="ekran/ops-ozet.webp" srcset="ekran/ops-ozet.webp 1024w, ekran/ops-ozet@2x.webp 2048w" sizes="(max-width:1080px) 100vw, 480px" width="1024" height="328" alt="AI Executive Summary paragrafı; Risk Level High 72/100, Group Size 40 pax, Report Generated kartları" loading="lazy"></span></button></div>
+      </article>
+      <article class="kutu b-risk belir">
+        <div class="metin">
+          <span class="no">Risk analizi</span>
+          <h3>Her risk maddesi, yanında bir önlemle gelir.</h3>
+          <p>Kalabalık grup check-in bloğu ister; yaş ortalaması yükseldikçe mola ve tampon süre artar; notlardaki ifadeler kendi maddesini açar. Rapor her maddeyi yapılacak işle birlikte yazar.</p>
+          <div class="kurallar">
+            <span><code>pax &gt; 30</code>otelle toplu check-in bloğu, ayrı resepsiyon masası</span>
+            <span><code>yaş &gt; 55</code>90 dakikada bir mola, öncelikli koltuk</span>
+            <span><code>wheelchair</code>basamak destekli araç, geniş kapılı oda</span>
+            <span><code>medical</code>en yakın hastane ve eczane rehber dosyasına</span>
+            <span><code>vegetarian</code>otel mutfağına 24 saat önce bilgi</span>
+          </div>
+        </div>
+        <div class="mini"><button type="button" data-buyuk="ekran/ops-risk@2x.webp" data-ad="Risk Analysis &amp; Mitigations"><span class="kirp" style="--oran:1024/481"><img src="ekran/ops-risk.webp" srcset="ekran/ops-risk.webp 1024w, ekran/ops-risk@2x.webp 2048w" sizes="(max-width:1080px) 100vw, 680px" width="1024" height="481" alt="Risk Analysis &amp; Mitigations: beş risk maddesi ve önlemleri" loading="lazy"></span></button></div>
+      </article>
+      <article class="kutu b-arac belir">
+        <span class="no">Araç ve rehber planı</span>
+        <h3>Kişi sayısı aracı, araç programı belirler.</h3>
+        <p>8 kişiye kadar VIP minivan, 24'e kadar 16 kişilik Sprinter'lar, daha kalabalık gruplara 45 kişilik otobüs ve destek aracı. Rehber sayısı gruba göre bir ile üç arası; acil durum zinciri ve sürücü onayı notlarda.</p>
+        <div class="mini"><button type="button" data-buyuk="ekran/ops-arac@2x.webp" data-ad="Vehicle Allocation ve Guide Deployment"><span class="kirp" style="--oran:1024/344"><img src="ekran/ops-arac.webp" srcset="ekran/ops-arac.webp 1024w, ekran/ops-arac@2x.webp 2048w" sizes="(max-width:1080px) 100vw, 580px" width="1024" height="344" alt="Vehicle Allocation: 1 otobüs ve 1 Sprinter, operasyon notları; Guide Deployment: iki rehber" loading="lazy"></span></button></div>
+      </article>
+      <article class="kutu b-pdf tint belir">
+        <span class="no">PDF rapor</span>
+        <h3>Ekip aynı planla sahaya çıksın.</h3>
+        <p><q>Download PDF</q> raporu A4'e uygun, başlıklı bir düzende yazdırır ya da PDF olarak kaydeder; menüler ve düğmeler çıktıda görünmez.</p>
+        <div class="mini"><button type="button" data-buyuk="ekran/ops-pdf@2x.webp" data-ad="PDF rapor düzeni"><span class="kirp kagit" style="--oran:820/330"><img src="ekran/ops-pdf.webp" srcset="ekran/ops-pdf.webp 820w, ekran/ops-pdf@2x.webp 1640w" sizes="(max-width:1080px) 100vw, 580px" width="820" height="1122" alt="Yazdırma düzeni: rotaDMC başlığı, AI Operations Report, özet ve risk kartları" loading="lazy"></span></button></div>
+      </article>
+    </div>
+
+    <article class="satir zaman-satir" id="o-zaman">
+      <div class="metin belir">
+        <span class="no">Zaman çizelgesi</span>
+        <h3>İnişten karşılama yemeğine, dokuz kontrol noktası.</h3>
+        <p>Program, girilen varış saatinden hesaplanır: iniş, pasaport, bagaj, gümrük çıkışında sayım, araca biniş, yola çıkış, otele varış, oda dağıtımı ve karşılama yemeği. Her adımda saat, ne yapılacağı ve kimin yapacağı yazar.</p>
+        <ul class="liste">
+          <li><svg class="i"><use href="#i-tik"/></svg><span>Yaş ortalaması 65'i aşarsa <b>pasaport süresi uzar</b>, rehber birebir yardım eder</span></li>
+          <li><svg class="i"><use href="#i-tik"/></svg><span>40 kişiyi aşan grupta <b>transfer ve check-in süreleri</b> artar</span></li>
+          <li><svg class="i"><use href="#i-tik"/></svg><span>Özel notlar <b>oda dağıtımı adımına</b> eklenir</span></li>
+        </ul>
+        <button class="git" type="button" data-ac="ops">Canlı uygulamada dene <svg class="i"><use href="#i-yukari"/></svg></button>
+      </div>
+      <figure class="cekim belir">
+        <button type="button" data-buyuk="ekran/ops-zaman@2x.webp" data-ad="Operations Timeline"><span class="kirp solgun" style="--oran:1024/900"><img src="ekran/ops-zaman.webp" srcset="ekran/ops-zaman.webp 1024w, ekran/ops-zaman@2x.webp 2048w" sizes="(max-width:1080px) 100vw, 720px" width="1024" height="1511" alt="Operations Timeline: 14:06 iniş, 14:14 pasaport kontrolü, 14:32 bagaj, 14:52 gümrük çıkışı ve sayım, 15:02 araca biniş ve devamı" loading="lazy"></span></button>
+        <figcaption><span>Operations Timeline · 9 kontrol noktası</span><span>Örnek veri · tamamı için tıklayın</span></figcaption>
+      </figure>
+    </article>
+
+    <div class="bas orta belir" style="margin-top:132px">
+      <span class="kas">Her ekranda</span>
+      <h2>Sahadaki rehberin telefonunda da <span class="gr">aynı plan.</span></h2>
+      <p>Arayüz dar ekrana uyum sağlar: form alanları alt alta dizilir, kartlar tek sütuna iner, zaman çizelgesi parmakla kaydırılır.</p>
+    </div>
+    <div class="tel-dizi belir">
+      <div class="tel"><button type="button" data-buyuk="ekran/tel-arama.webp" data-ad="Telefonda uçuş arama"><img src="ekran/tel-arama.webp" width="780" height="1688" alt="Telefonda arama formu: Istanbul ve Jeddah seçili" loading="lazy"></button></div>
+      <div class="tel"><button type="button" data-buyuk="ekran/tel-ops.webp" data-ad="Telefonda operasyon raporu"><img src="ekran/tel-ops.webp" width="780" height="1688" alt="Telefonda AI Executive Summary ve risk seviyesi kartları" loading="lazy"></button></div>
+      <div class="tel"><button type="button" data-buyuk="ekran/tel-zaman.webp" data-ad="Telefonda zaman çizelgesi"><img src="ekran/tel-zaman.webp" width="780" height="1688" alt="Telefonda Operations Timeline" loading="lazy"></button></div>
+    </div>
+    <div class="tel-alt" aria-hidden="true"><span>Flight Search</span><span>Rapor özeti</span><span>Zaman çizelgesi</span></div>
+
+    <div class="not-kutu belir">
+      <span class="ik"><svg class="i"><use href="#i-yildiz"/></svg></span>
+      <div>
+        <h3>Bu konseptte "AI" ne yapıyor?</h3>
+        <p>Plan, girilen bilgilere uygulanan operasyon kurallarıyla oluşturulur: aynı bilgiler her seferinde aynı planı verir, internete ya da bir dil modeline gönderilmez. Ürün sürümünde kurallar operasyon ekibinizin deneyimiyle genişletilir; serbest metin notları yorumlamak ve program önerisi yazmak için bir yapay zekâ modeli bağlanabilir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ YOLCULUK ============ -->
+<section class="gece" id="yolculuk">
+  <div class="sar">
+    <div class="bas orta belir">
+      <span class="kas">Bir grubun yolculuğu</span>
+      <h2>40 kişilik bir umre grubu, talepten karşılama yemeğine.</h2>
+      <p>Uygulamanın kendisiyle kurulmuş bir akış: aynı aramayı ve aynı formu canlı pencerede siz de yapabilirsiniz.</p>
+    </div>
+    <div class="yol" id="yol" role="list">
+      <span class="ilerleme" aria-hidden="true"></span>
+      <div class="durak" role="listitem"><span class="nokta">1</span><div class="kart belir">
+        <span class="etiket"><i></i>Talep</span>
+        <h3>Grup tarif edilir</h3>
+        <p>İstanbul'dan Cidde'ye 40 kişi. Yaş ortalaması 58; üç kişi tekerlekli sandalye kullanıyor, iki kişinin diyabeti var, altı kişi vejetaryen.</p>
+        <span class="veri">IST → JED · 17 Ocak 2027 · 40 kişi</span>
+      </div></div>
+      <div class="durak" role="listitem"><span class="nokta">2</span><div class="kart belir">
+        <span class="etiket"><i></i>Flight Search</span>
+        <h3>Uçuş seçilir</h3>
+        <p>Arama yedi uçuş döndürür. En ucuz seçenek direkt: 10:25'te kalkar, 14:06'da Cidde'de iner. <q>Select</q> ile işaretlenir.</p>
+        <span class="veri">XY 2646 · Nonstop · 3h 41m · USD 187,78 / kişi</span><br>
+        <button class="git" type="button" data-ac="ucus">Uygulamada göster <svg class="i"><use href="#i-yukari"/></svg></button>
+      </div></div>
+      <div class="durak" role="listitem"><span class="nokta">3</span><div class="kart belir">
+        <span class="etiket"><i></i>AI Operations</span>
+        <h3>Operasyon planı çıkar</h3>
+        <p>Grup bilgileri forma girilir, varış saati olarak seçilen uçuşun iniş saati yazılır. Rapor riski yüksek bulur ve beş maddeyi önlemleriyle sıralar.</p>
+        <span class="veri">Risk: High · 72 / 100 · 5 madde</span><br>
+        <button class="git" type="button" data-ac="ops">Uygulamada göster <svg class="i"><use href="#i-yukari"/></svg></button>
+      </div></div>
+      <div class="durak" role="listitem"><span class="nokta">4</span><div class="kart belir">
+        <span class="etiket"><i></i>Araç planı</span>
+        <h3>Transfer araçları ayrılır</h3>
+        <p>40 kişi için 45 kişilik bir otobüs ve yedek olarak 16 kişilik bir Sprinter; iki rehber. Araç onayları sürücüye 72 saat önce, yolcu listesiyle gider.</p>
+        <span class="veri">1× 45-Seater Coach + 1× Sprinter 16 · 2 rehber</span>
+      </div></div>
+      <div class="durak" role="listitem"><span class="nokta">5</span><div class="kart belir">
+        <span class="etiket"><i></i>Program</span>
+        <h3>Dakika dakika program yazılır</h3>
+        <p>Pasaport 14:14, bagaj 14:32, gümrük çıkışında sayım 14:52, araca biniş 15:02, otele varış 15:45, oda dağıtımı 16:00. Özel notlar oda dağıtımı adımına eklenir.</p>
+        <span class="veri">14:06 iniş → 17:30 karşılama yemeği</span>
+      </div></div>
+      <div class="durak" role="listitem"><span class="nokta">6</span><div class="kart belir">
+        <span class="etiket"><i></i>PDF rapor</span>
+        <h3>Ekip aynı planla sahaya çıkar</h3>
+        <p>Rapor tek tuşla yazdırılır ya da PDF olarak kaydedilir; rehber, transfer firması ve otel aynı saatlerle çalışır.</p>
+        <span class="veri">Download PDF Report</span>
+      </div></div>
+    </div>
+    <p class="yol-not">Uçuş, saat ve tutarlar uygulamanın ürettiği örnek verilerdir.</p>
+  </div>
+</section>
+
+<!-- ============ SSS ============ -->
+<section id="sss">
+  <div class="sar sss">
+    <div class="bas belir">
+      <span class="kas">Sık sorulanlar</span>
+      <h2>Merak edilenler.</h2>
+      <p>Bulamadığınız bir şey varsa yazın; konuşalım.</p>
+    </div>
+    <div class="belir">
+      <details class="soru" open>
+        <summary>Rota DMC şu an hangi aşamada?<i></i></summary>
+        <div class="cevap"><p>Rota DMC bir konsept çalışması: uçuş arama ve AI operasyon ekranları hazır, uygulama tarayıcıda örnek veriyle çalışıyor. Bir sunucuya bağlı değil; seçilen uçuşlar ve oluşturulan raporlar kaydedilmez, sayfa yenilenince sıfırlanır.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Uçuş sonuçları ve fiyatlar gerçek mi?<i></i></summary>
+        <div class="cevap"><p>Hayır. Bu konseptte sonuçlar tarayıcıda, rota ve tarihten üretilir; süre ve fiyat mesafeye göre gerçekçi aralıkta hesaplanır, aynı arama hep aynı sonucu verir. Ürün sürümünde arama gerçek bir uçuş veri sağlayıcısına bağlanır. Havayolu adları yalnızca gerçekçilik içindir; bu firmalarla bir iş birliği yoktur.</p></div>
+      </details>
+      <details class="soru">
+        <summary>AI Operations gerçekten yapay zekâ mı kullanıyor?<i></i></summary>
+        <div class="cevap"><p>Bu konseptte plan, operasyon kurallarıyla oluşturulur: kişi sayısı, yaş ortalaması ve özel notlardaki ifadeler risk puanını, araç ve rehber sayısını ve program sürelerini belirler. Veriler hiçbir yere gönderilmez. Ürün sürümünde bu kurallar ekibinizin deneyimiyle genişletilir; serbest metni yorumlamak için bir yapay zekâ modeli bağlanabilir.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Arayüz neden İngilizce?<i></i></summary>
+        <div class="cevap"><p>DMC'ler çoğunlukla yabancı acenteler, oteller ve çok dilli rehberlerle çalışır; rapor da bu ekiplerle paylaşılır. Bu yüzden arayüz ve rapor İngilizce tasarlandı. Türkçe ya da başka bir dil uyarlama aşamasında eklenebilir.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Telefonda kullanılabilir mi?<i></i></summary>
+        <div class="cevap"><p>Evet. Arama formu dar ekranda alt alta dizilir, uçuş kartları ve rapor tek sütuna iner. Rehberin sahada raporu telefondan açması için ayrıca bir şey kurmak gerekmez.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Hangi teknolojiyle yapıldı?<i></i></summary>
+        <div class="cevap"><p>Next.js ve React ile TypeScript'te yazıldı; arayüz Tailwind CSS, geçişler Framer Motion ile kuruldu. Bu tanıtım için statik olarak derlendi; uçuş üretimi ve operasyon analizi tarayıcıda çalışıyor.</p></div>
+      </details>
+      <details class="soru">
+        <summary>Kendi operasyonumuza uyarlanabilir mi?<i></i></summary>
+        <div class="cevap"><p>Konsept bunun için var. Uçuş veri kaynağı, araç filonuz ve kapasiteleri, rehber rolleri, risk kuralları ve rapor şablonu çalışma biçiminize göre şekillendirilir; seçilen uçuşun teklife ve rezervasyona aktarılması gibi adımlar eklenir. Aşağıdaki bağlantıdan yazın, birlikte bakalım.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAPANIŞ ============ -->
+<section class="kapanis">
+  <div class="sar">
+    <div class="bant belir">
+      <svg class="rota" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 350C240 110 520 360 780 160S1110 70 1240 110" fill="none" stroke="#ff6699" stroke-width="1.3" stroke-dasharray="2 8" stroke-linecap="round"/><circle cx="780" cy="160" r="4.5" fill="#ff0054"/></svg>
+      <span class="kas">Perabayt</span>
+      <h2>Rota DMC'yi operasyonunuza uyarlayalım.</h2>
+      <p>Uçuş kaynağınızı, araç filonuzu ve operasyon kurallarınızı konuşalım; planı ekibinizin çalışma biçimine göre birlikte şekillendirelim.</p>
+      <div class="eylem">
+        <a class="btn ana" href="https://perabayt-new.vercel.app/iletisim">Rota DMC'yi operasyonunuza uyarlayalım <svg class="i ok"><use href="#i-ok"/></svg></a>
+        <a class="btn" href="https://perabayt-new.vercel.app/urunler#konsept">Diğer çalışmalarımız</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="sar">
+    <div class="imza"><img src="ikon.svg" alt="" width="32" height="32"><div><b>rota<span>DMC</span></b>Perabayt tarafından tasarlandı ve geliştirildi · Konsept çalışma</div></div>
+    <nav aria-label="Alt bağlantılar"><a href="uygulama/" target="_blank" rel="noopener">Uygulamayı aç</a><a href="#ucus">Uçuş arama</a><a href="#operasyon">AI Operasyon</a><a href="#sss">SSS</a><a href="https://perabayt-new.vercel.app/urunler#konsept">Diğer çalışmalarımız</a></nav>
+    <p class="not">Tanıtım sayfası: uçuşlar, fiyatlar ve operasyon raporları örnek veridir. Havayolu adları yalnızca gerçekçilik içindir; bu firmalarla bir iş birliği yoktur.</p>
+  </div>
+</footer>
+
+<dialog id="buyuk" aria-label="Ekran görüntüsü">
+  <button class="kapat" type="button" aria-label="Kapat"><svg class="i"><use href="#i-x"/></svg></button>
+  <img alt="">
+  <p></p>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+  var az = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (s) { return document.querySelector(s); };
+
+  /* ---- üst çubuk ---- */
+  var ust = $("#ust");
+  var kaydi = function () { ust.classList.toggle("kaydi", scrollY > 8); };
+  addEventListener("scroll", kaydi, { passive: true }); kaydi();
+
+  /* ---- belirme + etkin bölüm ---- */
+  if ("IntersectionObserver" in window) {
+    var ro = new IntersectionObserver(function (g) {
+      g.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("gorundu"); ro.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.01 });
+    document.querySelectorAll(".belir").forEach(function (el) { ro.observe(el); });
+    var bekleyen = false;
+    addEventListener("scroll", function () {
+      if (bekleyen) return; bekleyen = true;
+      requestAnimationFrame(function () {
+        bekleyen = false;
+        document.querySelectorAll(".belir:not(.gorundu)").forEach(function (el) { if (el.getBoundingClientRect().top < innerHeight) { el.classList.add("gorundu"); ro.unobserve(el); } });
+      });
+    }, { passive: true });
+    var baglar = {};
+    document.querySelectorAll(".ust nav a").forEach(function (a) { baglar[a.getAttribute("href").slice(1)] = a; });
+    var bo = new IntersectionObserver(function (g) {
+      g.forEach(function (e) {
+        var a = baglar[e.target.id]; if (!a || !e.isIntersecting) return;
+        Object.keys(baglar).forEach(function (k) { baglar[k].classList.remove("aktif"); }); a.classList.add("aktif");
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    Object.keys(baglar).forEach(function (id) { var s = document.getElementById(id); if (s) bo.observe(s); });
+  } else {
+    document.querySelectorAll(".belir").forEach(function (el) { el.classList.add("gorundu"); });
+  }
+  if (az) document.querySelectorAll(".rotalar .ucak-g").forEach(function (c) { c.remove(); });
+
+  /* ================= CANLI UYGULAMA ================= */
+  var ekran = $("#ekran"), uyg = $("#uyg"), imlec = $("#imlec"), urlAd = $("#url-ad"), sekmeler = $("#sekmeler");
+  var olcek = 1, W = 1280, H = 800;
+
+  function olcekle() {
+    var w = ekran.clientWidth;
+    if (w >= 900) { W = 1280; H = 800; } else if (w >= 560) { W = 1024; H = 760; } else { W = 400; H = 720; }
+    olcek = Math.min(1, w / W);
+    uyg.style.width = W + "px"; uyg.style.height = H + "px";
+    uyg.style.transform = olcek < 1 ? "scale(" + olcek + ")" : "";
+    ekran.style.height = Math.round(H * olcek) + "px";
+    ekran.classList.toggle("dar", w < 700);
+  }
+  olcekle();
+  addEventListener("resize", olcekle);
+
+  function belge() { try { return uyg.contentDocument; } catch (_) { return null; } }
+  function pencere() { try { return uyg.contentWindow; } catch (_) { return null; } }
+
+  /* Uygulama sonuçlara scrollIntoView ile kayar; bu, iframe'i içeren tanıtım sayfasını da kaydırır.
+     Burada yalnızca iframe'in kendi içinde kaydırılsın diye yamalanır (uygulamanın kendisi değişmez). */
+  function yamala() {
+    var w = pencere(), d = belge();
+    if (!w || !d || !w.Element || w.__rotaYama) return;
+    w.__rotaYama = true;
+    w.Element.prototype.scrollIntoView = function (o) {
+      var el = this, p = el.parentElement;
+      while (p && p !== d.body && p !== d.documentElement) {
+        var cs = w.getComputedStyle(p);
+        if (/(auto|scroll)/.test(cs.overflowY) && p.scrollHeight > p.clientHeight) {
+          var r = el.getBoundingClientRect(), pr = p.getBoundingClientRect();
+          if (r.top < pr.top) p.scrollTop -= pr.top - r.top; else if (r.bottom > pr.bottom) p.scrollTop += r.bottom - pr.bottom;
+          return;
+        }
+        p = p.parentElement;
+      }
+      var yumusak = o && typeof o === "object" && o.behavior === "smooth" && !az;
+      var ust0 = 0, sabit = d.querySelector(".sticky");
+      if (sabit) ust0 = sabit.getBoundingClientRect().height + 12;
+      w.scrollTo({ top: Math.max(0, w.scrollY + el.getBoundingClientRect().top - ust0), behavior: yumusak ? "smooth" : "auto" });
+    };
+  }
+
+  /* hangi ekran açık: adres çubuğu ve sekmeler */
+  var sonYol = "";
+  function ekranOku() {
+    var w = pencere(); if (!w) return;
+    var yol;
+    try { yol = w.location.pathname; } catch (_) { return; }
+    if (yol === sonYol) return;
+    sonYol = yol;
+    var ops = /operations/.test(yol);
+    urlAd.textContent = ops ? "AI Operations" : "Flight Search";
+    sekmeler.querySelectorAll("button").forEach(function (b) { var s = (b.dataset.ac === "ops") === ops; b.classList.toggle("sec", s); b.setAttribute("aria-pressed", s); });
+    yamala();
+  }
+  setInterval(ekranOku, 400);
+
+  /* ---- otomatik tur ---- */
+  var durumEl = $("#durum"), durumYazi = $("#durum-yazi"), durumDugme = $("#durum-dugme");
+  var adimLi = document.querySelectorAll("#adimlar i");
+  var demo = { calisiyor: false, iptal: false };
+  var gorunur = true;
+  var METIN = {
+    hazir: ["Canlı uygulama · örnek veri", "Turu oynat", "i-oynat"],
+    sizde: ["<b>Kontrol sizde</b> · uygulamayı kendiniz deneyin", "Turu baştan oynat", "i-yenile"],
+    bitti: ["Tur bitti · başka bir rota ya da grup deneyin", "Baştan oynat", "i-yenile"]
+  };
+  function durumYaz(d, yazi) {
+    durumEl.dataset.d = d;
+    if (d === "oynuyor") { durumYazi.innerHTML = yazi; durumDugme.hidden = true; return; }
+    var m = METIN[d]; durumYazi.innerHTML = m[0];
+    durumDugme.hidden = false;
+    durumDugme.innerHTML = '<svg class="i"><use href="#' + m[2] + '"/></svg>' + m[1];
+    adimlar(-1);
+  }
+  function adimlar(n) { adimLi.forEach(function (li, i) { li.classList.toggle("gecti", n >= 0 && i < n); li.classList.toggle("simdi", i === n); }); }
+  function adim(n, ad, yazi) { adimlar(n); durumYaz("oynuyor", "<b>" + ad + "</b> · " + yazi); }
+
+  /* görünmüyorken (sayfa dışında ya da sekme gizli) tur bekler */
+  function bekle(ms) {
+    return new Promise(function (ok, red) {
+      var kalan = ms;
+      (function tik() {
+        if (demo.iptal) return red("iptal");
+        if (kalan <= 0) return ok();
+        var a = Math.min(100, kalan);
+        setTimeout(function () { if (gorunur && !document.hidden) kalan -= a; tik(); }, a);
+      })();
+    });
+  }
+  function bulBekle(fn, sure) {
+    return new Promise(function (ok, red) {
+      var t0 = Date.now();
+      (function dene() {
+        if (demo.iptal) return red("iptal");
+        var x = null; try { x = fn(); } catch (_) {}
+        if (x) return ok(x);
+        if (Date.now() - t0 > (sure || 15000)) return red("zaman");
+        setTimeout(dene, 150);
+      })();
+    });
+  }
+  function nokta(el, ox, oy) {
+    var r = el.getBoundingClientRect();
+    return { x: r.left + (ox == null ? r.width / 2 : ox), y: r.top + (oy == null ? r.height / 2 : oy) };
+  }
+  function imlecYer(p) {
+    imlec.classList.add("gor");
+    imlec.style.transform = "translate(" + (p.x * olcek).toFixed(1) + "px," + (p.y * olcek).toFixed(1) + "px)";
+  }
+  async function bas() { imlec.classList.remove("bas"); void imlec.offsetWidth; imlec.classList.add("bas"); await bekle(180); }
+  /* öğe iframe'in görünen alanında değilse, iframe'i (yalnızca kendisini) kaydır */
+  async function gozeAl(el, oran) {
+    var w = pencere(), r = el.getBoundingClientRect(), ust0 = 80;
+    if (r.top < ust0 || r.bottom > H - 30) {
+      w.scrollTo({ top: Math.max(0, w.scrollY + r.top - H * (oran == null ? 0.35 : oran)), behavior: az ? "auto" : "smooth" });
+      await bekle(900);
+    }
+  }
+  async function kaydir(y) {
+    var w = pencere();
+    w.scrollTo({ top: Math.max(0, y), behavior: az ? "auto" : "smooth" });
+    await bekle(1000);
+  }
+  async function tikla(el, bekleme) {
+    if (!el) return;
+    await gozeAl(el);
+    imlecYer(nokta(el)); await bekle(bekleme || 850);
+    await bas();
+    el.click();
+  }
+  function degerAyarla(el, v) {
+    var w = pencere();
+    var proto = el.tagName === "TEXTAREA" ? w.HTMLTextAreaElement.prototype : w.HTMLInputElement.prototype;
+    Object.getOwnPropertyDescriptor(proto, "value").set.call(el, v);
+    el.dispatchEvent(new w.Event("input", { bubbles: true }));
+    el.dispatchEvent(new w.Event("change", { bubbles: true }));
+  }
+  async function yaz(el, metin, hiz) {
+    var w = pencere();
+    var proto = el.tagName === "TEXTAREA" ? w.HTMLTextAreaElement.prototype : w.HTMLInputElement.prototype;
+    var set = Object.getOwnPropertyDescriptor(proto, "value").set;
+    for (var i = 1; i <= metin.length; i++) {
+      set.call(el, metin.slice(0, i));
+      el.dispatchEvent(new w.Event("input", { bubbles: true }));
+      await bekle(hiz || 110);
+    }
+  }
+  async function alanaYaz(el, metin, hiz) {
+    await gozeAl(el);
+    imlecYer(nokta(el, 70)); await bekle(800); await bas();
+    await yaz(el, metin, hiz);
+  }
+  /* havalimanı kutusu: yaz, listeden IATA koduna bas (uygulamanın onPointerDown işleyicisi) */
+  async function havalimani(id, sorgu, iata) {
+    var d = belge(), w = pencere(), el = d.getElementById(id);
+    await alanaYaz(el, sorgu, 120);
+    await bekle(500);
+    var li = await bulBekle(function () {
+      var s = null;
+      belge().querySelectorAll('[role="option"]').forEach(function (x) { if (!s && x.textContent.trim().indexOf(iata) === 0) s = x; });
+      return s;
+    }, 4000);
+    imlecYer(nokta(li, 60)); await bekle(850); await bas();
+    li.dispatchEvent(new w.PointerEvent("pointerdown", { bubbles: true, cancelable: true }));
+    await bekle(500);
+  }
+  function metinle(sec, rx) {
+    var d = belge(), s = null;
+    d.querySelectorAll(sec).forEach(function (x) { if (!s && rx.test(x.textContent.trim())) s = x; });
+    return s;
+  }
+  function kartOf(b) { var k = b; for (var j = 0; j < 9 && k && k.textContent.indexOf("USB Power") < 0; j++) k = k.parentElement; return k; }
+  function turTarihi() {
+    var sabit = new Date(2027, 0, 17);
+    var d = (sabit.getTime() - Date.now() > 3 * 864e5) ? sabit : new Date(Date.now() + 30 * 864e5);
+    var p = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  }
+  function ustSayfa() { var w = pencere(); try { return !/operations/.test(w.location.pathname); } catch (_) { return true; } }
+  async function sayfayaGit(ops) {
+    var link = await bulBekle(function () { return metinle("a", ops ? /^AI Operations$/ : /^Flight Search$/); });
+    await kaydir(0);
+    await tikla(link, 700);
+    await bulBekle(function () { return belge().getElementById(ops ? "groupName" : "dep-input"); });
+    await bekle(900);
+  }
+
+  var baslatildi = false;
+  async function oynat() {
+    if (demo.calisiyor) return;
+    baslatildi = true;
+    demo.iptal = false; demo.calisiyor = true;
+    durumYaz("oynuyor", "Tur başlıyor…");
+    try {
+      await bulBekle(function () { var d = belge(); return d && (d.getElementById("dep-input") || d.getElementById("groupName")); }, 20000);
+      yamala();
+      if (!ustSayfa()) await sayfayaGit(false);
+      await kaydir(0);
+      await bekle(700);
+
+      adim(0, "Rota", "kalkış ve varış havalimanı yazdıkça bulunur");
+      await havalimani("dep-input", "Istanbul", "IST");
+      await havalimani("arr-input", "Jeddah", "JED");
+
+      adim(1, "Tarih", "kalkış tarihi seçilir, arama başlar");
+      var tarih = belge().getElementById("date-input");
+      await gozeAl(tarih);
+      imlecYer(nokta(tarih, 90)); await bekle(850); await bas();
+      degerAyarla(tarih, turTarihi());
+      await bekle(900);
+      await tikla(belge().querySelector("form button[type=submit]"));
+
+      adim(2, "Sonuçlar", "fiyata göre sıralı; direkt ve aktarmalı yan yana");
+      await bulBekle(function () { return metinle("h2", /Flights Found/); }, 8000);
+      imlec.classList.remove("gor");
+      await bekle(2400);
+      var w = pencere();
+      await kaydir(w.scrollY + 300); await bekle(1500);
+      await kaydir(w.scrollY + 340); await bekle(1600);
+
+      adim(3, "Seçim", "uygun uçuş işaretlenir");
+      var sec = null;
+      belge().querySelectorAll("button").forEach(function (b) { if (!sec && b.textContent.trim() === "Select" && /Nonstop/.test((kartOf(b) || b).textContent)) sec = b; });
+      if (!sec) sec = metinle("button", /^Select$/);
+      var kart = kartOf(sec);
+      if (kart) { await kaydir(w.scrollY + kart.getBoundingClientRect().top - H * 0.28); }
+      await tikla(sec);
+      await bekle(1800);
+
+      adim(4, "AI Operations", "grup bilgileri altı alana girilir");
+      await sayfayaGit(true);
+      var d = belge();
+      await alanaYaz(d.getElementById("groupName"), "Umrah Group · January", 70);
+      await alanaYaz(d.getElementById("pax"), "40", 160);
+      await alanaYaz(d.getElementById("averageAge"), "58", 160);
+      var saat = d.getElementById("arrivalFlightTime");
+      await gozeAl(saat); imlecYer(nokta(saat, 70)); await bekle(800); await bas();
+      degerAyarla(saat, "14:06"); await bekle(500);
+      await alanaYaz(d.getElementById("hotel"), "Hotel near Masjid al-Haram, Makkah", 40);
+      await alanaYaz(d.getElementById("specialRequests"), "3 wheelchair users, 2 passengers with medical needs (diabetes), vegetarian meals for 6", 26);
+      await bekle(600);
+      await tikla(d.querySelector("main form button[type=submit]"));
+
+      adim(5, "Plan", "özet, risk, araç planı ve zaman çizelgesi");
+      await bulBekle(function () { return belge().getElementById("ops-results"); }, 10000);
+      imlec.classList.remove("gor");
+      await bekle(3200);
+      var bolum = function (rx) { var h = metinle("h3", rx); return h ? w.scrollY + h.getBoundingClientRect().top - 90 : null; };
+      var y;
+      if ((y = bolum(/^Risk Analysis/)) != null) { await kaydir(y); await bekle(2600); }
+      if ((y = bolum(/^Vehicle Allocation/)) != null) { await kaydir(y); await bekle(2800); }
+      if ((y = bolum(/^Operations Timeline/)) != null) { await kaydir(y); await bekle(2200); }
+      await kaydir(w.scrollY + 380); await bekle(1600);
+      await kaydir(w.scrollY + 380); await bekle(2000);
+
+      imlec.classList.remove("gor");
+      demo.calisiyor = false; durumYaz("bitti");
+    } catch (_) { /* ziyaretçi devraldı ya da uygulama yanıt vermedi */
+      if (demo.calisiyor) { demo.calisiyor = false; imlec.classList.remove("gor"); durumYaz("sizde"); }
+    }
+  }
+  function devral(e) {
+    if (e && e.isTrusted === false) return;
+    if (!demo.calisiyor) return;
+    demo.iptal = true; demo.calisiyor = false;
+    imlec.classList.remove("gor");
+    durumYaz("sizde");
+  }
+  function dinle() {
+    var d = belge(); if (!d || d.__rotaDinle) return;
+    d.__rotaDinle = true;
+    ["pointerdown", "keydown", "touchstart", "wheel"].forEach(function (t) { d.addEventListener(t, devral, { passive: true, capture: true }); });
+  }
+  uyg.addEventListener("load", function () { dinle(); yamala(); sonYol = ""; });
+  if (belge() && belge().readyState === "complete") { dinle(); yamala(); }
+
+  function bastan() {
+    devral(); demo.iptal = false;
+    var bir = function () { uyg.removeEventListener("load", bir); oynat(); };
+    uyg.addEventListener("load", bir);
+    uyg.src = "uygulama/";
+  }
+  durumDugme.addEventListener("click", function () {
+    if (durumEl.dataset.d === "hazir") oynat(); else bastan();
+  });
+
+  durumYaz("hazir");
+  if ("IntersectionObserver" in window) {
+    var po = new IntersectionObserver(function (g) {
+      gorunur = g[0].isIntersecting && g[0].intersectionRatio >= 0.15;
+      if (gorunur && !baslatildi && !az) { baslatildi = true; oynat(); }
+    }, { threshold: [0, 0.15, 0.3, 0.6] });
+    po.observe(ekran);
+  }
+
+  /* ---- ekrana git (sekmeler ve sayfadaki "uygulamada göster" düğmeleri) ---- */
+  function ekranaGit(hedef, kaydirSayfa) {
+    if (demo.calisiyor) devral();
+    else if (durumEl.dataset.d === "hazir") { baslatildi = true; durumYaz("sizde"); }
+    var link = metinle("a", hedef === "ops" ? /^AI Operations$/ : /^Flight Search$/);
+    if (link) link.click();
+    var w = pencere(); if (w) setTimeout(function () { try { w.scrollTo(0, 0); } catch (_) {} }, 350);
+    if (kaydirSayfa) $("#canli").scrollIntoView({ behavior: az ? "auto" : "smooth", block: "center" });
+    else {
+      var r = ekran.getBoundingClientRect();
+      if (r.top < 60 || r.bottom > innerHeight + 40) ekran.scrollIntoView({ behavior: az ? "auto" : "smooth", block: "center" });
+    }
+  }
+  sekmeler.addEventListener("click", function (ev) { var b = ev.target.closest("button[data-ac]"); if (b) ekranaGit(b.dataset.ac, false); });
+  document.querySelectorAll("main .git[data-ac]").forEach(function (b) { b.addEventListener("click", function () { ekranaGit(b.dataset.ac, true); }); });
+
+  /* ================= YOLCULUK ilerleme çizgisi ================= */
+  var yol = $("#yol"), ilerleme = yol.querySelector(".ilerleme"), duraklar = yol.querySelectorAll(".durak");
+  function yolGuncelle() {
+    var r = yol.getBoundingClientRect(), hedef = innerHeight * 0.6;
+    var h = Math.max(0, Math.min(r.height - 20, hedef - r.top));
+    ilerleme.style.setProperty("--h", h + "px");
+    duraklar.forEach(function (dr) { var nr = dr.querySelector(".nokta").getBoundingClientRect(); dr.classList.toggle("gecti", nr.top + 18 < hedef); });
+  }
+  addEventListener("scroll", yolGuncelle, { passive: true }); addEventListener("resize", yolGuncelle); yolGuncelle();
+
+  /* ================= büyük görüntü ================= */
+  var dlg = $("#buyuk");
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-buyuk]");
+    if (!b) return;
+    var img = dlg.querySelector("img");
+    img.src = b.dataset.buyuk; img.alt = (b.querySelector("img") || {}).alt || "";
+    dlg.querySelector("p").textContent = (b.dataset.ad || "") + " · örnek veri";
+    dlg.showModal();
+  });
+  dlg.addEventListener("click", function (e) { if (e.target === dlg || e.target.closest(".kapat")) dlg.close(); });
+})();
+</script>
+</body>
+</html>

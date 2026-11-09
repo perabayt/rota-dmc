@@ -1,0 +1,2 @@
+:HL["/rota-dmc/uygulama/_next/static/chunks/4a83f7bdc15f7a12.css","style"]
+0:{"buildId":"BwwUD2R3nx0eWXw9G0jHH","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"operations","paramType":null,"paramKey":"operations","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
